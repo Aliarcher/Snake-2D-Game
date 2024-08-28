@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Time Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            flex-direction: column;
+        }
+        canvas {
+            max-width: 80%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="foodTimeChart"></canvas>
+    <button onclick="restartGame()">دوباره بازی کن</button>
+
+    <script>
+        // Retrieve food times from localStorage
+        const foodTimes = JSON.parse(localStorage.getItem("foodTimes")) || [];
+
+        // Set up the line chart using Chart.js
+        const ctx = document.getElementById('foodTimeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: foodTimes.map((_, index) => index + 1), // Step numbers
+                datasets: [{
+                    label: 'زمان خوردن غذا (ثانیه)',
+                    data: foodTimes,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    x: { title: { display: true, text: 'گام' } },
+                    y: { title: { display: true, text: 'زمان (ثانیه)' }, beginAtZero: true }
+                }
+            }
+        });
+
+        // Function to restart the game
+        function restartGame() {
+            // Clear the stored times and redirect to the game page
+            localStorage.removeItem("foodTimes");
+            window.location.href = "index.html"; // Adjust the file path if necessary
+        }
+    </script>
+</body>
+</html>
